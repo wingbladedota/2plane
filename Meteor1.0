@@ -1,0 +1,82 @@
+public boolean kill1 = false;
+public boolean kill2 = false;
+
+class Meteor {
+  color c;
+  float xpos;
+  float ypos ; 
+  float xspeed;
+  float yspeed;
+  float size;
+
+  Meteor()
+  {
+    c=color(random(0, 255), random(0, 255), random(0, 255));
+    xpos = width+(random(100, 500));
+    ypos = random(-50, height+50);
+    xspeed = random(-3, -5);
+    ypos = random(-50, height+50);
+    size = random(34, 84);      
+    yspeed = random(-1.5, 1.5);
+  }
+
+  void meteorinit() {
+    fill(c);
+    circle(xpos, ypos, size);
+  }
+
+  void move() {
+    xpos= xpos+xspeed;
+    ypos = ypos+yspeed;
+    if (xpos < -100) {
+      xpos = width+(random(100, 500));
+      yspeed = random(-1.5, 1.5);
+      ypos = random(-50, height+50);
+      c=color(random(0, 255), random(0, 255), random(0, 255));
+      xspeed = random(-3, -5);
+      size = random(1, 200);
+    }    //if
+    if (ypos > height+50 || ypos < -50) {
+      xpos = width+(random(100, 500));
+      ypos = random(-50, height+50);
+      c=color(random(0, 255), random(0, 255), random(0, 255));
+      xspeed = random(-3, -5);
+      size = random(1, 200);
+    }
+    if (ypos+size/2 > plane1.posY && ypos - size/2 <plane1.posY+plane1.sizeY && xpos+size/2 > plane1.posX && xpos -size/2 < plane1.posX+plane1.sizeX)
+    {
+      println("1", kill1);
+
+      kill1 = true;
+    }//if
+
+    if (ypos+size/2 > plane2.posY && ypos - size/2 <plane2.posY+plane2.sizeY && xpos+size/2 > plane2.posX && xpos -size/2 < plane2.posX+plane2.sizeX)
+    {
+      kill2 = true;
+      println("yes2", kill2);
+    }//if
+  }
+}
+
+void meteordraw() {
+  time++;
+  for ( int u = 0; u < meteornumber; u++) {
+    meteor[u].meteorinit(); // ufo komt tevoorschijn
+    meteor[u].move(); // ufo kan bewegen
+  }// for
+  if (time % 99999999 ==1 && time>2 && meteornumber<Meteormax-1) {
+    meteornumber++;
+  }
+}
+
+void meteorsetup() {
+  meteor = new Meteor[Meteormax];
+
+  for ( int u = 0; u < Meteormax; u++) {
+    meteor[u] = new Meteor(); //maakt new ufo
+  } //for
+}//enemyufosetup
+
+int Meteormax = 20000;
+int meteornumber = 1;
+float time =0;
